@@ -3,23 +3,20 @@ import { renderGallery } from './js/render-functions';
 import iziToast from 'izitoast';
 
 const searchInut = document.querySelector('#search');
-const gallery = document.querySelector('.gallery');
-
-function createLoader() {
-  return '<div class="loader"></div>';
-}
+const loader = document.querySelector('.loader-wrapper');
 
 document.querySelector('.submit').addEventListener('click', event => {
   event.preventDefault();
-  gallery.innerHTML = createLoader();
+  loader.style.display = 'block';
   const result = searchImages(searchInut.value);
   result
     .then(data => {
-      setTimeout(() => {
-        renderGallery(gallery, data.hits);
-      }, 300);
+      renderGallery(data.hits);
     })
     .catch(error => {
-      iziToast.error({ title: 'Error', message: error.message });
+      iziToast.error({ title: 'Error', message: error });
+    })
+    .finally(() => {
+      loader.style.display = 'none';
     });
 });

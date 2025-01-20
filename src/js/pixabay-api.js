@@ -14,14 +14,11 @@ export const searchImages = text => {
   return fetch(`https://pixabay.com/api/?${params.toString()}`, options)
     .then(response => {
       if (!response.ok) {
-        throw new Error(response.status);
+        throw response.status;
       }
       return response.json();
     })
     .catch(error => {
-      iziToast.show({
-        color: '#ffafb4',
-        message: error.message,
-      });
+      iziToast.error({ title: 'Error', message: error });
     });
 };
